@@ -1,26 +1,98 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* BM Winners design tokens.
+   Outcome colours: Okabe-Ito (colour-blind safe), never red/green; always paired with text. */
+@theme {
+  --font-sans: var(--font-heebo-latin), var(--font-heebo-hebrew), "Noto Sans Hebrew", Arial, sans-serif;
+  --font-display: var(--font-rubik-latin), var(--font-rubik-hebrew), var(--font-heebo-hebrew), Arial, sans-serif;
+
+  --color-ground: #f5f6f3;
+  --color-surface: #ffffff;
+  --color-ink: #14181f;
+  --color-ink-2: #4a5160; /* secondary text, 7.6:1 on white */
+  --color-ink-3: #5f6673; /* tertiary text, 5.9:1 on white */
+  --color-line: #dfe2dc;
+  --color-line-strong: #c4c8c0;
+
+  --color-real: #0b6b45; /* realistic map accent */
+  --color-real-soft: #e6f2ec;
+  --color-spirit: #3a44b8; /* spiritual map accent */
+  --color-spirit-soft: #eceefb;
+
+  --color-o1: #0072b2; /* 1 – home (white text 5.3:1) */
+  --color-ox: #8a929e; /* X – draw (ink text 5.6:1) */
+  --color-o2: #e69f00; /* 2 – away (ink text 8.3:1) */
+
+  --color-warn: #8a5a00; /* amber text 5.4:1 on white */
+  --color-warn-soft: #fff4dc;
+  --color-danger: #a1271b;
+  --color-danger-soft: #fdecea;
+  --color-focus: #1d4ed8;
+
+  --breakpoint-3xl: 120rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--color-ground);
+  color: var(--color-ink);
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 4.5rem; /* sticky header must not obscure focused content (WCAG 2.4.11) */
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  min-height: 100dvh;
+}
+
+:where(h1, h2, h3) {
+  font-family: var(--font-display);
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.num {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* demo rows: hatched background so demo can never be mistaken for real data */
+.demo-hatch {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 10px,
+    rgb(138 90 0 / 0.06) 10px 20px
+  );
+}
+
+/* scroll regions get an edge shadow hint where more content hides */
+.scroll-region {
+  overflow: auto;
+  overscroll-behavior-inline: contain;
+  background:
+    linear-gradient(to left, var(--color-surface) 30%, transparent) left / 2rem 100% no-repeat local,
+    linear-gradient(to left, rgb(0 0 0 / 0.08), transparent) left / 0.75rem 100% no-repeat scroll,
+    var(--color-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
 }
