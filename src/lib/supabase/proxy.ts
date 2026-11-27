@@ -37,7 +37,8 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     url.search = '';
-    if (path !== '/') url.searchParams.set('next', path + request.nextUrl.search);
+    const back = path + request.nextUrl.search;
+    if (back !== '/') url.searchParams.set('next', back);
     const redirect = NextResponse.redirect(url);
     supabaseResponse.cookies.getAll().forEach((c) => redirect.cookies.set(c));
     return redirect;
