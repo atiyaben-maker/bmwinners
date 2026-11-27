@@ -40,9 +40,15 @@ export async function sendCode(_prev: LoginState, form: FormData): Promise<Login
         emailRedirectTo: `${origin}/auth/confirm?next=${encodeURIComponent(next)}`,
       },
     });
-    if (error && error.status === 429) {
-      return { step: 'email', email, message: null, error: 'נשלחו יותר מדי בקשות. נסו שוב בעוד דקה.' };
+    if (error) {
+      // Server-side only (Vercel logs): the reason a sign-in mail was not sent.
+      console.error('[login] signInWithOtp failed', { status: error.status, code: error.code, message: error.message });
+      if (error.status === 429) {
+        return { step: 'email', email, message: null, error: 'נשלחו יותר מדי מיילים בשעה האחרונה. נסו שוב מאוחר יותר.' };
+      }
     }
+  } else {
+    console.warn('[login] address not on the allow-list', { configured: Boolean(allowed) });
   }
   return { step: 'code', email, message: SENT, error: null };
 }
