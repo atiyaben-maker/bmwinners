@@ -105,3 +105,11 @@ test('phone: compact list shows recommendation and bar without sideways scroll',
   const first = list.getByRole('listitem').first();
   await expect(first.getByRole('img', { name: /^סיכויים:/ })).toBeInViewport();
 });
+
+test('Hebrew text renders in Heebo/Rubik, not a system fallback', async ({ page }) => {
+  await page.goto('/');
+  const loaded = () =>
+    page.evaluate(() => [...document.fonts].filter((f) => f.status === 'loaded').map((f) => `${f.family}|${f.unicodeRange}`));
+  await expect.poll(async () => (await loaded()).some((f) => f.startsWith('Heebo Variable') && f.includes('U+590-5FF'))).toBe(true);
+  await expect.poll(async () => (await loaded()).some((f) => f.startsWith('Rubik Variable') && f.includes('U+590-5FF'))).toBe(true);
+});

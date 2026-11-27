@@ -3,8 +3,8 @@
 /* BM Winners design tokens.
    Outcome colours: Okabe-Ito (colour-blind safe), never red/green; always paired with text. */
 @theme {
-  --font-sans: var(--font-heebo-latin), var(--font-heebo-hebrew), "Noto Sans Hebrew", Arial, sans-serif;
-  --font-display: var(--font-rubik-latin), var(--font-rubik-hebrew), var(--font-heebo-hebrew), Arial, sans-serif;
+  --font-sans: "Heebo Variable", "Noto Sans Hebrew", Arial, sans-serif;
+  --font-display: "Rubik Variable", "Heebo Variable", Arial, sans-serif;
 
   --color-ground: #f5f6f3;
   --color-surface: #ffffff;
