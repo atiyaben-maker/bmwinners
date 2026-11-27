@@ -1,7 +1,7 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { isSupabaseConfigured } from '@/lib/supabase/config';
+import { isSupabaseConfigured, SUPABASE_URL } from '@/lib/supabase/config';
 import { createClient } from '@/lib/supabase/server';
 
 export interface LoginState {
@@ -43,6 +43,17 @@ export async function sendCode(_prev: LoginState, form: FormData): Promise<Login
     if (error) {
       // Server-side only (Vercel logs): the reason a sign-in mail was not sent.
       console.error('[login] signInWithOtp failed', { status: error.status, code: error.code, message: error.message });
+      if (!error.status) {
+        // Network-level failure: record which host and the low-level cause (DNS, TLS, refused…).
+        const host = (() => { try { return new URL(SUPABASE_URL).host; } catch { return `invalid:${SUPABASE_URL.slice(0, 12)}`; } })();
+        try {
+          const r = await fetch(`${SUPABASE_URL}/auth/v1/health`, { cache: 'no-store' });
+          console.error('[login] probe', { host, status: r.status });
+        } catch (e) {
+          const c = (e as { cause?: { code?: string; message?: string } }).cause;
+          console.error('[login] probe failed', { host, code: c?.code, cause: c?.message ?? String(e) });
+        }
+      }
       if (error.status === 429) {
         return { step: 'email', email, message: null, error: 'נשלחו יותר מדי מיילים בשעה האחרונה. נסו שוב מאוחר יותר.' };
       }
