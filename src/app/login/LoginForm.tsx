@@ -64,7 +64,7 @@ export function LoginForm({ next, initialError }: { next: string; initialError: 
             disabled={sending}
             className="h-12 w-full rounded-lg bg-ink px-4 font-medium text-white hover:bg-ink/90 disabled:opacity-60"
           >
-            {sending ? 'שולח…' : 'שלחו לי קוד כניסה'}
+            {sending ? 'שולח…' : 'שלחו לי מייל כניסה'}
           </button>
         </form>
       ) : (
@@ -72,11 +72,11 @@ export function LoginForm({ next, initialError }: { next: string; initialError: 
           <input type="hidden" name="next" value={next} />
           <input type="hidden" name="email" value={email} />
           <p className="text-sm">
-            הקוד נשלח אל <bdi dir="ltr" className="font-medium break-all">{email}</bdi>
+            מייל הכניסה נשלח אל <bdi dir="ltr" className="font-medium break-all">{email}</bdi>
           </p>
           <div className="space-y-1.5">
             <label htmlFor="token" className="block text-sm font-medium">
-              קוד בן 6 ספרות
+              קוד בן 6 ספרות (אם הופיע במייל)
             </label>
             <input
               ref={codeRef}
@@ -110,7 +110,7 @@ export function LoginForm({ next, initialError }: { next: string; initialError: 
               disabled={wait > 0 || sending}
               className="min-h-11 px-1 underline underline-offset-4 disabled:no-underline disabled:text-ink-3"
             >
-              {wait > 0 ? <>שליחה חוזרת בעוד <span className="num">{wait}</span> שנ׳</> : 'שליחת קוד חדש'}
+              {wait > 0 ? <>שליחה חוזרת בעוד <span className="num">{wait}</span> שנ׳</> : 'שליחת מייל חדש'}
             </button>
           </div>
         </form>

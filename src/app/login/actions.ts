@@ -13,7 +13,7 @@ export interface LoginState {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Same answer whether or not the address is allowed – never reveal which email owns the system.
-const SENT = 'אם הכתובת מורשית, נשלח אליה קוד בן 6 ספרות (ובנוסף קישור כניסה). הקוד בתוקף לשעה.';
+const SENT = 'אם הכתובת מורשית, נשלח אליה מייל כניסה. לחצו על הקישור שבמייל באותו דפדפן – או הזינו כאן קוד אם המייל כולל קוד. בתוקף לשעה.';
 
 function safeNext(next: unknown): string {
   const n = typeof next === 'string' ? next : '/';

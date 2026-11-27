@@ -15,11 +15,14 @@ Next.js 16 (App Router, Cache Components, `src/proxy.ts`) · React 19 · Tailwin
 1. Supabase → SQL: run `supabase/migrations/20261120000000_init.sql`, then `supabase/seed.sql`
    (or `npx supabase link --project-ref ukmdfudkubdedhntnhdz && npx supabase db push`).
 2. Supabase → Auth → Users → *Add user* with your email; then Auth → Sign In / Providers → **disable "Allow new users to sign up"**.
-3. Supabase → Auth → Email templates → Magic Link: include `{{ .Token }}` (6-digit code). Configure custom SMTP (built-in mail = 2/hour).
+3. Sign-in is by magic link (default template). Optional: configure custom SMTP (built-in mail ≈ 2/hour), which also unlocks template editing – add `{{ .Token }}` for a 6-digit code.
 4. Supabase → Auth → URL configuration: Site URL `https://bmwinners.com`, redirect `https://bmwinners.com/**`.
 5. Vercel: import `atiyaben-maker/bmwinners`, add the Supabase integration (syncs the keys), set `ALLOWED_EMAIL` and `NEXT_PUBLIC_SITE_URL`.
 6. Vercel → Domains: add `bmwinners.com` + `www`; in Cloudflare create the A/CNAME records Vercel shows, **DNS only (grey cloud)**.
 7. Sign in at `/login` — the first sign-in claims ownership (`claim_ownership()`), after which nobody else can.
+
+## Region
+The Supabase project is in Tokyo (ap-northeast-1), so `vercel.json` pins functions to `hnd1` to keep DB round-trips short.
 
 ## Quality gates
 ```
